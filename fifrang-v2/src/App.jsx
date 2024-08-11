@@ -9,6 +9,7 @@ import theme from './theme';
 import './App.css'
 import { CssBaseline } from '@mui/material';
 import UserInfoLayout from './pages/user-main/UserInfoLayout';
+import Error from './pages/error/Error';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainSearch />}></Route>
           <Route path="/user/:userId" element={<UserInfoLayout />}></Route>
+          <Route path="/error" element={<Error />}></Route>
         </Routes>
       </BrowserRouter>
     </React.Fragment>

@@ -6,6 +6,7 @@ import CustomTextField from '@/comonents/form/CustomTextField';
 const backgroundImage = './src/assets/background.jpg';
 
 export default function ProductHero() {
+
   return (
     <MainSearchLayout
       sxBackground={{

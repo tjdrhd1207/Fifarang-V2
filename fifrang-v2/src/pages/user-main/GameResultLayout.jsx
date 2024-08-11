@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import styled from "styled-components";
-import CustomTypography from '/src/comonents/ui/CustomTypography';
+import CustomTypography from "/src/comonents/ui/CustomTypography";
 
 const GameContainer = styled.div`
   height: 150px;
@@ -22,12 +22,31 @@ const GameContainer = styled.div`
 `;
 
 const FirstSubBox = styled.div`
-    margin-left: 30px;
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: baseline;
-`
+  margin-left: 30px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+`;
+
+const NickNameBox = styled.div`
+  width: 100px;
+  display: flex;
+  justify-content: center;
+`;
+
+const ScoreBox = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const DetailBox = styled.div`
+  display: flex;
+  width: 150px;
+  justify-content: end;
+  cursor: pointer;
+`;
+
 function GameResultLayout(props) {
   const { win } = props;
   const gameResult =
@@ -36,22 +55,42 @@ function GameResultLayout(props) {
   return (
     <GameContainer win={win}>
       <FirstSubBox>
-      <ThumbUpIcon sx={{ color: "white" }} fontSize="large"></ThumbUpIcon>
+        <ThumbUpIcon sx={{ color: "white" }} fontSize="large"></ThumbUpIcon>
         <CustomTypography
           fontSize="25px"
           fontWeight="bold"
           color="white"
           content={gameResult}
-        >
-        </CustomTypography>
+        ></CustomTypography>
       </FirstSubBox>
-      <Box marginLeft={"30px"}>
+      <NickNameBox>
         <Typography
-            sx={{ fontWeight: "bold", fontSize: "50px", color: "white" }}
+          sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}
         >
-            {'3 : 0'}
+          {"게구맨"}
         </Typography>
-      </Box>
+      </NickNameBox>
+      <ScoreBox>
+        <Typography
+          sx={{ fontWeight: "bold", fontSize: "50px", color: "white" }}
+        >
+          {"3 : 0"}
+        </Typography>
+      </ScoreBox>
+      <NickNameBox>
+        <Typography
+          sx={{ fontWeight: "bold", fontSize: "20px", color: "white" }}
+        >
+          {"하르네스"}
+        </Typography>
+      </NickNameBox>
+      <DetailBox>
+        <Typography
+          sx={{ fontWeight: "400", fontSize: "15px", color: "white" }}
+        >
+          {"상세보기"}
+        </Typography>
+      </DetailBox>
     </GameContainer>
   );
 }

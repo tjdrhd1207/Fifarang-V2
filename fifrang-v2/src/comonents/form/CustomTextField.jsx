@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
+import useHttpRequest from "../../hooks/useFetch";
+import { API } from "../../utils/api-url";
 
 // styled.input 정의
 const InputTextField = styled.input`
@@ -28,23 +29,46 @@ const StyledButton = styled.button`
 
 function CustomTextField() {
     const navigate = useNavigate();
+    const inputRef = useRef(null);
     const [userId, setUserId] = useState('');
+    const apiSearchUUid = API.GET_USER_OUID;
 
-    const searchOnclick = () => {
-        // TODO : 구단주 조회 api와 
-        navigate(`/user/${userId}`);
-    }
+    // API 요청
+    const { data, isLoading, error, fetchData } = useHttpRequest();
+
     const inputUserId = (event) => {
         setUserId(event.target.value);
     }
 
+    const handleSearchUesr = (e) => {
+        if (e.type === "click" || e.key === "Enter") {
+            fetchData(apiSearchUUid, 'get', userId);
+        }
+    }
+
+    useEffect(() => {
+        if (data) {
+            navigate(`/user/${userId}`);
+        }
+
+        if (error) {
+            navigate(`/error`, { state: { errorMessage: error.message } });
+        }
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [data, navigate, error]);
+
     return (
         <InputWrapper>
             <InputTextField
+                ref={inputRef}
                 value={userId}
                 onChange={(event) => inputUserId(event)}
+                onKeyDown={handleSearchUesr}
             />
-            <StyledButton onClick={searchOnclick}>
+            <StyledButton onClick={handleSearchUesr}>
                 {'검색'}
             </StyledButton>
         </InputWrapper>

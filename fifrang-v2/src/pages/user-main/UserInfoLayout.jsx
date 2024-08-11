@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import styled from "styled-components";
 import "@fontsource/roboto/300.css";
 import GameResultLayout from "./GameResultLayout";
+import DonutChart from "../../comonents/ui/DonutChart";
 
 const SearchMainLayout = styled.section`
   display: flex;
@@ -47,6 +48,24 @@ const ResultMainBox = styled.div`
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 `;
+const GraphContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 1000px;
+  justify-content: space-around;
+`;
+
+const GraphBox = styled.div`
+  display: flex;
+  width: 400px;
+  height: 300px;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  margin : 0 auto;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+`;
 
 function UserInfoLayout() {
   return (
@@ -59,6 +78,14 @@ function UserInfoLayout() {
           <Typography variant="h4">{`님의 최근전적`}</Typography>
         </UserMainBox>
         <ResultMainBox>
+          <GraphContainer>
+            <GraphBox>
+              <DonutChart></DonutChart>
+            </GraphBox>
+            <GraphBox>
+              <DonutChart></DonutChart>
+            </GraphBox>
+          </GraphContainer>
           <GameResultLayout win="win" />
           <GameResultLayout win="lose" />
           <GameResultLayout win="win" />
