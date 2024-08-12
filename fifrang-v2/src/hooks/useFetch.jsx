@@ -5,12 +5,11 @@ import { apiKey } from '../utils/data-key';
 
 const useHttpRequest = () => {
     const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const fetchData = useCallback(async(requestUrl, requestMethod = 'get', userId) => {
         setIsLoading(true);
-        setError(null);
 
         try {
             console.log(`METHOD : ${requestMethod}`);
@@ -23,7 +22,6 @@ const useHttpRequest = () => {
             axios.get(requestApiUrl, { headers: requestHeader }).then((res) => {
                 setData(res.data);
             }).catch((err) => {
-                console.log('에러와유');
                 console.log(err);
                 setError(err);
             });

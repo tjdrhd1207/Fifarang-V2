@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -48,9 +49,13 @@ const DetailBox = styled.div`
 `;
 
 function GameResultLayout(props) {
+  const location = useLocation();
   const { win } = props;
   const gameResult =
     win === "lose" ? "패배" : win === "draw" ? "무승부" : "승리";
+  const { ouid } = location.state || {};
+
+  console.log(ouid);
 
   return (
     <GameContainer win={win}>

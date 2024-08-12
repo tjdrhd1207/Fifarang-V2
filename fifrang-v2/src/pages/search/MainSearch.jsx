@@ -21,14 +21,14 @@ export default function ProductHero() {
         src={backgroundImage}
         alt="increase priority"
       />
-      <CustomTypography content={`Please enter the team owner's name`} fontSize={'50px'} fontWeight={'bolder'}/>
+      <CustomTypography content={`FC Online의 구단주명을 입력해주세요`} fontSize={'50px'} fontWeight={'bolder'}/>
       <Typography
         color="inherit"
         align="center"
         variant="h5"
-        sx={{ mb: 4, mt: { xs: 4, sm: 10 } }}
+        sx={{ mb: 4, mt: { xs: 4, sm: 10 }, opacity: "0.7" }}
       >
-        Enjoy secret offers up to -70% off the best luxury hotels every Sunday.
+        정보를 알고 싶은 구단주명을 입력하면 최근 경기에 대한 내용을 확인할 수 있습니다.
       </Typography>
       <CustomTextField>
       </CustomTextField>

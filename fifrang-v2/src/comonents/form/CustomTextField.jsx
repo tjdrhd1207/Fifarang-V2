@@ -47,16 +47,14 @@ function CustomTextField() {
     }
 
     useEffect(() => {
-        if (data) {
-            navigate(`/user/${userId}`);
-        }
-
-        if (error) {
-            navigate(`/error`, { state: { errorMessage: error.message } });
-        }
-
         if (inputRef.current) {
             inputRef.current.focus();
+        }
+
+        if (data) {
+            navigate(`/user/${userId}`, { state: { ouid: data } });
+        } else if (error) {
+            navigate(`/error`, { state: { errorMessage: error.message } });
         }
     }, [data, navigate, error]);
 
