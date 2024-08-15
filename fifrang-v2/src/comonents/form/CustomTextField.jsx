@@ -30,19 +30,19 @@ const StyledButton = styled.button`
 function CustomTextField() {
     const navigate = useNavigate();
     const inputRef = useRef(null);
-    const [userId, setUserId] = useState('');
+    const [reqValue, setReqValue] = useState('');
     const apiSearchUUid = API.GET_USER_OUID;
 
     // API 요청
     const { data, isLoading, error, fetchData } = useHttpRequest();
 
     const inputUserId = (event) => {
-        setUserId(event.target.value);
+        setReqValue(event.target.value);
     }
 
     const handleSearchUesr = (e) => {
         if (e.type === "click" || e.key === "Enter") {
-            fetchData(apiSearchUUid, 'get', userId);
+            fetchData(apiSearchUUid, 'get', reqValue);
         }
     }
 
@@ -52,7 +52,7 @@ function CustomTextField() {
         }
 
         if (data) {
-            navigate(`/user/${userId}`, { state: { ouid: data } });
+            navigate(`/user/${reqValue}`, { state: { ouid: data } });
         } else if (error) {
             navigate(`/error`, { state: { errorMessage: error.message } });
         }
@@ -62,7 +62,7 @@ function CustomTextField() {
         <InputWrapper>
             <InputTextField
                 ref={inputRef}
-                value={userId}
+                value={reqValue}
                 onChange={(event) => inputUserId(event)}
                 onKeyDown={handleSearchUesr}
             />

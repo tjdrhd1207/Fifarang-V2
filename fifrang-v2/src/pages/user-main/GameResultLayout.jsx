@@ -53,9 +53,6 @@ function GameResultLayout(props) {
   const { win } = props;
   const gameResult =
     win === "lose" ? "패배" : win === "draw" ? "무승부" : "승리";
-  const { ouid } = location.state || {};
-
-  console.log(ouid);
 
   return (
     <GameContainer win={win}>

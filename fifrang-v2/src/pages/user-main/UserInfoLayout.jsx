@@ -2,7 +2,10 @@ import { Typography } from "@mui/material";
 import styled from "styled-components";
 import "@fontsource/roboto/300.css";
 import GameResultLayout from "./GameResultLayout";
+import OwnerNameBar from "../../comonents/ui/OwnerNameBar";
 import DonutChart from "../../comonents/ui/DonutChart";
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const SearchMainLayout = styled.section`
   display: flex;
@@ -68,15 +71,16 @@ const GraphBox = styled.div`
 `;
 
 function UserInfoLayout() {
+  const location = useLocation();
+
+  const ouid = location.state.ouid;
+  console.log(ouid);
+  
+
   return (
     <SearchMainLayout>
       <SearchMainContainer>
-        <UserMainBox>
-          <Typography variant="h2" fontWeight={"500"}>
-            {`게구맨`}
-          </Typography>
-          <Typography variant="h4">{`님의 최근전적`}</Typography>
-        </UserMainBox>
+        <OwnerNameBar ouid={ouid} />
         <ResultMainBox>
           <GraphContainer>
             <GraphBox>

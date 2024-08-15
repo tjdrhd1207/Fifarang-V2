@@ -8,26 +8,25 @@ const useHttpRequest = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchData = useCallback(async(requestUrl, requestMethod = 'get', userId) => {
+    const fetchData = useCallback(async(requestUrl, requestMethod = 'get', reqValue) => {
         setIsLoading(true);
 
         try {
             console.log(`METHOD : ${requestMethod}`);
-            console.log(`requestBody : ${userId}`);
-            const requestApiUrl = `https://open.api.nexon.com${requestUrl}=${userId}`;
+            console.log(`requestBody : ${reqValue}`);
+            const requestApiUrl = `https://open.api.nexon.com${requestUrl}=${reqValue}`;
             const requestHeader = {
                 [apiKey.key] : apiKey.value
             };
 
-            axios.get(requestApiUrl, { headers: requestHeader }).then((res) => {
-                setData(res.data);
-            }).catch((err) => {
-                console.log(err);
+            const response = await axios.get(requestApiUrl, { headers: requestHeader });
+                setData(response.data);
+            } catch (err) {
+                console.error(err); // Log the error
                 setError(err);
-            });
-        } finally {
-            setIsLoading(false);
-        }
+            } finally {
+                setIsLoading(false);
+            }
     }, []);
 
     // useEffect(() => {
