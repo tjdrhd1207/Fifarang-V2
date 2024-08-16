@@ -14,19 +14,41 @@ const useHttpRequest = () => {
         try {
             console.log(`METHOD : ${requestMethod}`);
             console.log(`requestBody : ${reqValue}`);
-            const requestApiUrl = `https://open.api.nexon.com${requestUrl}=${reqValue}`;
+            const requestApiUrl = `https://open.api.nexon.com${requestUrl}`;
             const requestHeader = {
                 [apiKey.key] : apiKey.value
             };
+            let url = requestApiUrl;
 
-            const response = await axios.get(requestApiUrl, { headers: requestHeader });
-                setData(response.data);
-            } catch (err) {
-                console.error(err); // Log the error
-                setError(err);
-            } finally {
-                setIsLoading(false);
+            if (reqValue && typeof reqValue === 'object') {
+                console.log('하모');
+                const queryString = new URLSearchParams(reqValue).toString();
+                url = `${requestApiUrl}?${queryString}`;    
+            } else if (reqValue) {
+                url = `${requestApiUrl}=${reqValue}`;
             }
+            console.log('----------url======');
+            console.log(url)
+            let response = null;
+
+            if (requestMethod.toLowerCase() === 'get') {
+                response = await axios.get(url, { headers: requestHeader });
+            } else {
+                response = await axios({
+                    method: requestMethod,
+                    url: requestApiUrl,
+                    headers: requestHeader,
+                    data: reqValue
+                });
+            }
+
+            setData(response.data);
+        } catch (err) {
+            console.error(err); // Log the error
+            setError(err);    
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
     // useEffect(() => {

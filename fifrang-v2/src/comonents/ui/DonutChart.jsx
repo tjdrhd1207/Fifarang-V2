@@ -1,7 +1,12 @@
 import Chart from "react-apexcharts";
 import { useState } from "react";
+import useHttpRequest from "../../hooks/useFetch";
 
 function DonutChart() {
+
+    // 공식경기 1on1 MatchType(50)에 관한 API 호출
+    // const { data, isLoading, error, fetchData } = useHttpRequest();
+
     const [chartData, setChartData] = useState({
         series: [44, 55, 17],
         options: {
