@@ -71,6 +71,16 @@ const GraphBox = styled.div`
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 `;
+
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+  width: 1000px;
+  font-size: 24px;
+  color: #333;
+`;
 // Nexon API에서 제공하는 1ON1 공식경기의 타입은 50
 // TODO : 추후 파일로 관리하는 것이 좋아 보임
 const MATCH_TYPE = 50;
@@ -82,11 +92,23 @@ function UserInfoLayout() {
   const ouid = location.state.ouid;
   const latestMatchId = API.GET_LATEST_10_GAME_OUID;
 
-  // 최근 10 경기 내의 MATCH의 OUID를 조회
-  console.log(ouid);
   const { data, isLoading, error, fetchData } = useHttpRequest();
-  const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT};
-  fetchData(latestMatchId, 'get', reqBody);
+  const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT };
+
+  useEffect(() => {
+    fetchData(latestMatchId, 'get', reqBody);  // 최근 10 경기 내의 MATCH의 OUID를 조회
+  }, [latestMatchId, ouid]);
+
+  useEffect(() => {
+    if (data) {
+      console.log("Fetched Data: ", data);
+    }
+  }, [data]);
+
+  if (isLoading) return <LoadingSpinner>데이터 조회중...</LoadingSpinner>
+  else if (error) {
+    navigate(`/error`, { state: { errorMessage: error.message } });
+  }
 
   return (
     <SearchMainLayout>
@@ -95,24 +117,25 @@ function UserInfoLayout() {
         <ResultMainBox>
           <GraphContainer>
             <GraphBox>
-              <DonutChart></DonutChart>
+              {data && <DonutChart arrMatchid={data}></DonutChart>}
             </GraphBox>
             <GraphBox>
-              <DonutChart></DonutChart>
+            {/* {data && <DonutChart></DonutChart>} */}
             </GraphBox>
           </GraphContainer>
-          <GameResultLayout win="win" />
-          <GameResultLayout win="lose" />
-          <GameResultLayout win="win" />
-          <GameResultLayout win="lose" />
-          <GameResultLayout win="draw" />
-          <GameResultLayout win="win" />
-          <GameResultLayout win="win" />
-          <GameResultLayout win="draw" />
+          {data && <GameResultLayout win="win" />}
+          {/* <GameResultLayout win="lose" />
+            <GameResultLayout win="win" />
+            <GameResultLayout win="lose" />
+            <GameResultLayout win="draw" />
+            <GameResultLayout win="win" />
+            <GameResultLayout win="win" />
+            <GameResultLayout win="draw" /> */}
         </ResultMainBox>
       </SearchMainContainer>
     </SearchMainLayout>
   );
+
 }
 
 export default UserInfoLayout;

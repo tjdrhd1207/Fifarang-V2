@@ -21,14 +21,11 @@ const useHttpRequest = () => {
             let url = requestApiUrl;
 
             if (reqValue && typeof reqValue === 'object') {
-                console.log('하모');
                 const queryString = new URLSearchParams(reqValue).toString();
                 url = `${requestApiUrl}?${queryString}`;    
             } else if (reqValue) {
                 url = `${requestApiUrl}=${reqValue}`;
             }
-            console.log('----------url======');
-            console.log(url)
             let response = null;
 
             if (requestMethod.toLowerCase() === 'get') {

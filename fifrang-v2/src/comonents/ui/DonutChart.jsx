@@ -1,11 +1,26 @@
 import Chart from "react-apexcharts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useHttpRequest from "../../hooks/useFetch";
+import { API } from "../../utils/api-url";
 
-function DonutChart() {
+function DonutChart(props) {
+    const { arrMatchid } = props;
+    const apiMatchInfo = API.GET_DETAIL_GAME_INFO;
+    const { data, isLoading, error, fetchData } = useHttpRequest();
+    
+    useEffect(() => {
+      // console.log(arrMatchid);
+      arrMatchid.map((ouid) => {
+        fetchData(apiMatchInfo, 'get', ouid);
+      })
+    }, [arrMatchid, apiMatchInfo]);
 
-    // 공식경기 1on1 MatchType(50)에 관한 API 호출
-    // const { data, isLoading, error, fetchData } = useHttpRequest();
+    useEffect(() => {
+      if (data) {
+        console.log('조회한 matchId 결과 : ');
+        console.log(data);
+      }
+    }, [data]);
 
     const [chartData, setChartData] = useState({
         series: [44, 55, 17],
