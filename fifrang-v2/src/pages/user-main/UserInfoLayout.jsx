@@ -4,10 +4,12 @@ import "@fontsource/roboto/300.css";
 import GameResultLayout from "./GameResultLayout";
 import OwnerNameBar from "../../comonents/ui/OwnerNameBar";
 import DonutChart from "../../comonents/ui/DonutChart";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useHttpRequest from "../../hooks/useFetch";
 import { API } from "../../utils/api-url";
+import Loading from "../../comonents/ui/LoadingSpinner";
+import Last10GameGraph from "../../comonents/ui/DonutChart";
 
 const SearchMainLayout = styled.section`
   display: flex;
@@ -72,15 +74,6 @@ const GraphBox = styled.div`
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 `;
 
-const LoadingSpinner = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 150px;
-  width: 1000px;
-  font-size: 24px;
-  color: #333;
-`;
 // Nexon API에서 제공하는 1ON1 공식경기의 타입은 50
 // TODO : 추후 파일로 관리하는 것이 좋아 보임
 const MATCH_TYPE = 50;
@@ -91,6 +84,7 @@ function UserInfoLayout() {
   const location = useLocation();
   const ouid = location.state.ouid;
   const latestMatchId = API.GET_LATEST_10_GAME_OUID;
+  const navigate = useNavigate();
 
   const { data, isLoading, error, fetchData } = useHttpRequest();
   const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT };
@@ -105,7 +99,7 @@ function UserInfoLayout() {
     }
   }, [data]);
 
-  if (isLoading) return <LoadingSpinner>데이터 조회중...</LoadingSpinner>
+  if (isLoading) return <Loading message={'전체 데이터 조회중입니다...'}></Loading>
   else if (error) {
     navigate(`/error`, { state: { errorMessage: error.message } });
   }
@@ -117,7 +111,7 @@ function UserInfoLayout() {
         <ResultMainBox>
           <GraphContainer>
             <GraphBox>
-              {data && <DonutChart arrMatchid={data}></DonutChart>}
+              {data && <Last10GameGraph arrMatchid={data}></Last10GameGraph>}
             </GraphBox>
             <GraphBox>
             {/* {data && <DonutChart></DonutChart>} */}

@@ -38,7 +38,6 @@ const useHttpRequest = () => {
                     data: reqValue
                 });
             }
-
             setData(response.data);
         } catch (err) {
             console.error(err); // Log the error
