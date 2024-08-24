@@ -74,7 +74,7 @@ function Last10GameGraph(props) {
             }
           }],
           title: {
-            text: "1vs1 공식경기 (최근 10경기)",
+            text: `1vs1 공식경기 (최근 ${arrMatchid.length}경기)`,
             align: "center"
           },
         }
@@ -107,21 +107,22 @@ function Last10GameGraph(props) {
       }
     });
   // TODO : 예외발생할 상항이 없는지 확인해봐야함 (ex. 총 판수가 10판 이하 일때)
-  if (matchSum !== (matchWinArray.length + matchDrawArray.length + matchLoseArray.length)) return <Loading></Loading>
-  return (
-    <>
+  if (arrMatchid.length !== (matchWinArray.length + matchDrawArray.length + matchLoseArray.length)) return <Loading></Loading>
+  else {
+    return (
+        <>
 
-        <Chart
-        options={chartData.options}
-        series={chartData.series}
-        type="donut"
-        width="400px"
-        >
-        </Chart>
-    </>
-  );
+            <Chart
+            options={chartData.options}
+            series={chartData.series}
+            type="donut"
+            width="400px"
+            >
+            </Chart>
+        </>
+    );
+  }
 }
-
 Last10GameGraph.propTypes = {
     arrMatchid: PropTypes.array,
 }

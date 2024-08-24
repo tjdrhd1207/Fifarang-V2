@@ -74,6 +74,20 @@ const GraphBox = styled.div`
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 `;
 
+const MatchCard = styled.div`
+  color: white;
+  width: 200px;
+  height: 100px;
+  background: seagreen;
+  border-radius: 10px;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+  0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  align-content: center;
+  font-size: 30px;
+  font-weight: 700;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+`
+
 // Nexon API에서 제공하는 1ON1 공식경기의 타입은 50
 // TODO : 추후 파일로 관리하는 것이 좋아 보임
 const MATCH_TYPE = 50;
@@ -84,24 +98,37 @@ function UserInfoLayout() {
   const location = useLocation();
   const ouid = location.state.ouid;
   const latestMatchId = API.GET_LATEST_10_GAME_OUID;
+  const matchTypeUrl = API.GET_MATCH_TYPE;
   const navigate = useNavigate();
 
-  const { data, isLoading, error, fetchData } = useHttpRequest();
+  const { data: latest_1on1_MatchData, isLoading: isLatest_1on1_MatchLoading, error: latest_1on1_MatchError, fetchData: fetch_1on1_LatestMatchData } = useHttpRequest();
+  const { data: matchtypeData, isLoading: matchtypeLoading, error: matchtypeError, fetchData: fetchMatchtypeData } = useHttpRequest();
+
   const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT };
 
   useEffect(() => {
-    fetchData(latestMatchId, 'get', reqBody);  // 최근 10 경기 내의 MATCH의 OUID를 조회
+    fetchMatchtypeData(matchTypeUrl, 'get');
+  }, [matchTypeUrl])
+
+/*   useEffect(() => {
+    fetch_1on1_LatestMatchData(latestMatchId, 'get', reqBody);  // 최근 10 경기 내의 MATCH의 OUID를 조회
   }, [latestMatchId, ouid]);
-
-  useEffect(() => {
-    if (data) {
-      console.log("Fetched Data: ", data);
+ */
+/*   useEffect(() => {
+    if (latest_1on1_MatchData) {
+      console.log("Fetched Data: ", latest_1on1_MatchData);
     }
-  }, [data]);
+  }, [latest_1on1_MatchData]);
+ */
+  useEffect(() => {
+    if (matchtypeData) {
+      console.log("Fetch MatchType : ", matchtypeData);
+    }
+  }, [matchtypeData]);
 
-  if (isLoading) return <Loading message={'전체 데이터 조회중입니다...'}></Loading>
-  else if (error) {
-    navigate(`/error`, { state: { errorMessage: error.message } });
+  if (matchtypeLoading) return <Loading message={'전체 데이터 조회중입니다...'}></Loading>
+  else if (matchtypeError) {
+    navigate(`/error`, { state: { errorMessage: matchtypeError.message } });
   }
 
   return (
@@ -110,14 +137,18 @@ function UserInfoLayout() {
         <OwnerNameBar ouid={ouid} />
         <ResultMainBox>
           <GraphContainer>
-            <GraphBox>
-              {data && <Last10GameGraph arrMatchid={data}></Last10GameGraph>}
+            <MatchCard>공식경기</MatchCard>
+            <MatchCard>감독모드</MatchCard>
+            <MatchCard>리그친선</MatchCard>
+            <MatchCard>볼타친선</MatchCard>
+            {/* <GraphBox>
+              {latest_1on1_MatchData && <Last10GameGraph arrMatchid={latest_1on1_MatchData}></Last10GameGraph>}
             </GraphBox>
             <GraphBox>
-            {/* {data && <DonutChart></DonutChart>} */}
-            </GraphBox>
+            {data && <Last10GameGraph arrMatchid={data}></Last10GameGraph>}
+            </GraphBox> */}
           </GraphContainer>
-          {data && <GameResultLayout win="win" />}
+          {<GameResultLayout win="win" />}
           {/* <GameResultLayout win="lose" />
             <GameResultLayout win="win" />
             <GameResultLayout win="lose" />
