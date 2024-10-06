@@ -108,17 +108,16 @@ function Last10GameGraph(props) {
 
   return (
     <>
-
-        <Chart
-        options={chartData.options}
-        series={chartData.series}
-        type="donut"
-        width="400px"
-        >
-        </Chart>
-    </>
-  );
-}
+            <Chart
+            options={chartData.options}
+            series={chartData.series}
+            type="donut"
+            width="400px"
+            >
+            </Chart>
+        </>
+    );
+  }
 
 Last10GameGraph.propTypes = {
     arrMatchid: PropTypes.array,

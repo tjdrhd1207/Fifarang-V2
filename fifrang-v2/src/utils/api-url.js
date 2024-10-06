@@ -6,5 +6,7 @@ export const API = {
     /* 최근 10 게임의 ouid 조회 */
     GET_LATEST_10_GAME_OUID: '/fconline/v1/user/match',
     /* 게임의 상세정보 조회 */
-    GET_DETAIL_GAME_INFO: '/fconline/v1/match-detail?matchid'
+    GET_DETAIL_GAME_INFO: '/fconline/v1/match-detail?matchid',
+    /* 매치타입 조회 */
+    GET_MATCH_TYPE: '/static/fconline/meta/matchtype.json',
 };
