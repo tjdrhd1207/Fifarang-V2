@@ -3,7 +3,6 @@ import styled from "styled-components";
 import "@fontsource/roboto/300.css";
 import GameResultLayout from "./GameResultLayout";
 import OwnerNameBar from "../../comonents/ui/OwnerNameBar";
-import DonutChart from "../../comonents/ui/DonutChart";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useHttpRequest from "../../hooks/useFetch";
@@ -85,6 +84,7 @@ function UserInfoLayout() {
   const ouid = location.state.ouid;
   const latestMatchId = API.GET_LATEST_10_GAME_OUID;
   const navigate = useNavigate();
+  const [matchIdArray, setMatchIdArray] = useState(null);
 
   const { data, isLoading, error, fetchData } = useHttpRequest();
   const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT };
@@ -94,8 +94,10 @@ function UserInfoLayout() {
   }, [latestMatchId, ouid]);
 
   useEffect(() => {
+    console.log('data : '+data);
     if (data) {
       console.log("Fetched Data: ", data);
+      setMatchIdArray(data);
     }
   }, [data]);
 
@@ -117,14 +119,9 @@ function UserInfoLayout() {
             {/* {data && <DonutChart></DonutChart>} */}
             </GraphBox>
           </GraphContainer>
-          {data && <GameResultLayout win="win" />}
-          {/* <GameResultLayout win="lose" />
-            <GameResultLayout win="win" />
-            <GameResultLayout win="lose" />
-            <GameResultLayout win="draw" />
-            <GameResultLayout win="win" />
-            <GameResultLayout win="win" />
-            <GameResultLayout win="draw" /> */}
+          {matchIdArray && matchIdArray.map((matchId, index) => (
+            <GameResultLayout win="win" key={index} matchId={matchId}/>
+            ))}
         </ResultMainBox>
       </SearchMainContainer>
     </SearchMainLayout>
