@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import styled from "styled-components";
 import "@fontsource/roboto/300.css";
-import GameResultLayout from "./GameResultLayout";
+import GameResultLayout from "./game-result/GameResultLayout";
 import OwnerNameBar from "../../comonents/ui/OwnerNameBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import useHttpRequest from "../../hooks/useFetch";
 import { API } from "../../utils/api-url";
 import Loading from "../../comonents/ui/LoadingSpinner";
 import Last10GameGraph from "../../comonents/ui/DonutChart";
+import useUserInfoStore from "../../store/searchUserInfo";
 
 const SearchMainLayout = styled.section`
   display: flex;
@@ -87,10 +88,12 @@ function UserInfoLayout() {
   const [matchIdArray, setMatchIdArray] = useState(null);
 
   const { data, isLoading, error, fetchData } = useHttpRequest();
+  const { setUser } = useUserInfoStore();
   const reqBody = { ouid: ouid.ouid, matchtype: MATCH_TYPE, offset: OFF_SET, limit: LIMIT };
 
   useEffect(() => {
     fetchData(latestMatchId, 'get', reqBody);  // 최근 10 경기 내의 MATCH의 OUID를 조회
+    setUser(ouid.ouid);
   }, [latestMatchId, ouid]);
 
   useEffect(() => {
