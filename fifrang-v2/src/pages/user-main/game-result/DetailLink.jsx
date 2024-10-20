@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Typography } from "@mui/material";
 import styled from "styled-components";
 
@@ -8,14 +9,19 @@ const DetailBox = styled.div`
   cursor: pointer;
 `;
 
-function DetailLink() {
+function DetailLink({ onClick }) {
   return (
-    <DetailBox>
+    <DetailBox onClick={onClick}>
       <Typography sx={{ fontWeight: "400", fontSize: "15px", color: "white" }}>
         상세보기
       </Typography>
     </DetailBox>
   );
 }
+
+DetailLink.propTypes = {
+  onClick : PropTypes.func,
+};
+
 
 export default DetailLink;

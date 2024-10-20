@@ -15,7 +15,7 @@ import useUserInfoStore from "../../../store/searchUserInfo";
 import Loading from "../../../comonents/ui/LoadingSpinner";
 
 function GameResultLayout(props) {
-  const { matchId } = props;
+  const { matchId, openSquad  } = props;
   const navigate = useNavigate();
   const apiMatchResultInfo = API.GET_DETAIL_GAME_INFO;
   const { data, isLoading, error, fetchData } = useHttpRequest();
@@ -24,6 +24,7 @@ function GameResultLayout(props) {
   const [homePlayer, setHomePlayer] = useState(null);
   const [awayPlayer, setAwayPlayer] = useState(null);
   const [gameResultText, setGameResultText] = useState(null);
+  const [openDetailGame, setOpenDetailGame] = useState(true);
 
   const gameResult = () => {
     if (user === homePlayer.ouid) {
@@ -32,6 +33,11 @@ function GameResultLayout(props) {
       setGameResultText(homePlayer.shoot.goalTotal > awayPlayer.shoot.goalTotal ? "패" : homePlayer.shoot.goalTotal === awayPlayer.shoot.goalTotal ? "무" : "승");
     }
   };
+
+  const handleDetailGame = () => {
+    setOpenDetailGame((prevState) => !prevState);
+    openSquad (openDetailGame);
+  }
 
   useEffect(() => {
     const apiFetch = async() => {
@@ -64,13 +70,14 @@ function GameResultLayout(props) {
        {homePlayer && <PlayerInfo nickname={homePlayer.nickname} />}
        {awayPlayer && <PlayerInfo nickname={awayPlayer.nickname} />}
        {homePlayer && awayPlayer && <GameScore homeScore={homePlayer.shoot.goalTotalDisplay} awayScore={awayPlayer.shoot.goalTotalDisplay} />}
-       <DetailLink />
+       <DetailLink onClick={handleDetailGame} open={openDetailGame}/>
     </GameContainer>
   );
 }
 
 GameResultLayout.propTypes = {
   matchId: PropTypes.string,
+  openSquad: PropTypes.func,
 };
 
 export default GameResultLayout;

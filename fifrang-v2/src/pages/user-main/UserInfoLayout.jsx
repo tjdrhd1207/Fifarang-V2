@@ -10,6 +10,7 @@ import { API } from "../../utils/api-url";
 import Loading from "../../comonents/ui/LoadingSpinner";
 import Last10GameGraph from "../../comonents/ui/DonutChart";
 import useUserInfoStore from "../../store/searchUserInfo";
+import GameInfoAccordian from "./game-result/GameInfoAccordian";
 
 const SearchMainLayout = styled.section`
   display: flex;
@@ -123,8 +124,8 @@ function UserInfoLayout() {
             </GraphBox>
           </GraphContainer>
           {matchIdArray && matchIdArray.map((matchId, index) => (
-            <GameResultLayout win="win" key={index} matchId={matchId}/>
-            ))}
+            <GameInfoAccordian win="win" key={index} matchId={matchId}/>
+          ))}
         </ResultMainBox>
       </SearchMainContainer>
     </SearchMainLayout>
