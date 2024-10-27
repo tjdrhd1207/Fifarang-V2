@@ -23,6 +23,7 @@ function GameResultLayout(props) {
 
   const [homePlayer, setHomePlayer] = useState(null);
   const [awayPlayer, setAwayPlayer] = useState(null);
+  const [gameSquadInfo, setGameSquadInfo] = useState(null);
   const [gameResultText, setGameResultText] = useState(null);
   const [openDetailGame, setOpenDetailGame] = useState(true);
 
@@ -50,6 +51,7 @@ function GameResultLayout(props) {
     if (data) {
       setHomePlayer(data.matchInfo[0]);
       setAwayPlayer(data.matchInfo[1]);
+      setGameSquadInfo(data);
     }
   }, [data]);
 
@@ -70,7 +72,7 @@ function GameResultLayout(props) {
        {homePlayer && <PlayerInfo nickname={homePlayer.nickname} />}
        {awayPlayer && <PlayerInfo nickname={awayPlayer.nickname} />}
        {homePlayer && awayPlayer && <GameScore homeScore={homePlayer.shoot.goalTotalDisplay} awayScore={awayPlayer.shoot.goalTotalDisplay} />}
-       <DetailLink onClick={handleDetailGame} open={openDetailGame}/>
+       {gameSquadInfo && <DetailLink onClick={handleDetailGame} open={openDetailGame} detailInfo={gameSquadInfo}/>}
     </GameContainer>
   );
 }

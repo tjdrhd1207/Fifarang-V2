@@ -8,33 +8,43 @@ const useHttpRequest = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchData = useCallback(async(requestUrl, requestMethod = 'get', reqValue) => {
+    const fetchData = useCallback(async(requestUrl, requestMethod = 'get', reqValue, exception = false) => {
         setIsLoading(true);
-
+        let requestApiUrl = '';
         try {
             console.log(`METHOD : ${requestMethod}`);
             console.log(`requestBody : ${reqValue}`);
-            const requestApiUrl = `https://open.api.nexon.com${requestUrl}`;
+            if (!exception) {
+                requestApiUrl = `https://open.api.nexon.com${requestUrl}`;
+            } else {
+                requestApiUrl = `https://fco.dn.nexoncdn.co.kr${requestUrl}`;
+            }
             const requestHeader = {
                 [apiKey.key] : apiKey.value
             };
             let url = requestApiUrl;
-
-            if (reqValue && typeof reqValue === 'object') {
-                const queryString = new URLSearchParams(reqValue).toString();
-                url = `${requestApiUrl}?${queryString}`;    
-            } else if (reqValue) {
-                url = `${requestApiUrl}=${reqValue}`;
+            if (!exception) { 
+                if (reqValue && typeof reqValue === 'object') {
+                    const queryString = new URLSearchParams(reqValue).toString();
+                    url = `${requestApiUrl}?${queryString}`;    
+                } else if (reqValue) {
+                    url = `${requestApiUrl}=${reqValue}`;
+                }
+            } else {
+                console.log('사진조회');
+                url = `${requestApiUrl}`;
             }
             let response = null;
 
             if (requestMethod.toLowerCase() === 'get') {
-                response = await axios.get(url, { headers: requestHeader });
+                console.log('get조회');
+                response = await axios.get(url, { headers: requestHeader, withCredentials: true });
             } else {
                 response = await axios({
                     method: requestMethod,
                     url: requestApiUrl,
                     headers: requestHeader,
+                    withCredentials: true,
                     data: reqValue
                 });
             }

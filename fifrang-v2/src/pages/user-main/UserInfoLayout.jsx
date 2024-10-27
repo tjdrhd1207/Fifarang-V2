@@ -1,7 +1,5 @@
-import { Typography } from "@mui/material";
 import styled from "styled-components";
 import "@fontsource/roboto/300.css";
-import GameResultLayout from "./game-result/GameResultLayout";
 import OwnerNameBar from "../../comonents/ui/OwnerNameBar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -28,20 +26,20 @@ const SearchMainContainer = styled.div`
   height: 100%;
 `;
 
-const UserMainBox = styled.div`
-  display: flex;
-  margin-top: 10px;
-  height: 150px;
-  width: 1000px;
-  align-items: center;
-  gap: 15px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-  justify-content: center;
-  margin-bottom: 30px;
-`;
+// const UserMainBox = styled.div`
+//   display: flex;
+//   margin-top: 10px;
+//   height: 150px;
+//   width: 1000px;
+//   align-items: center;
+//   gap: 15px;
+//   background: white;
+//   border-radius: 10px;
+//   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+//     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+//   justify-content: center;
+//   margin-bottom: 30px;
+// `;
 
 const ResultMainBox = styled.div`
   display: flex;

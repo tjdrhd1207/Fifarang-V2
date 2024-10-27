@@ -1,12 +1,16 @@
 import axios from 'axios';
 
-async function httpRequest(requestMethod, requestUrl, resquestBody) {
+async function httpRequest(requestMethod, requestUrl, resquestBody, exception = false) {
     let responseData = "";
 
     console.log(`METHOD : ${requestMethod} `);
     console.log(`requestBody : ${resquestBody}`);
-
-    const requestApiUrl = `https://open.api.nexon.com${requestUrl}=${resquestBody}`;
+    let requestApiUrl = '';
+    if (!exception) {
+        requestApiUrl = `https://open.api.nexon.com${requestUrl}=${resquestBody}`;
+    } else {
+        requestApiUrl = `https://fco.dn.nexoncdn.co.kr${requestUrl}`;
+    }
     const requestOptions = {};
 
     await axios(requestApiUrl, requestOptions)

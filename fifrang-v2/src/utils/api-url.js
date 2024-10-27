@@ -9,4 +9,6 @@ export const API = {
     GET_DETAIL_GAME_INFO: '/fconline/v1/match-detail?matchid',
     /* 매치타입 조회 */
     GET_MATCH_TYPE: '/static/fconline/meta/matchtype.json',
+    /* 선수들 이미지 조회 */
+    GET_PLAYERS_IMAGE: '/live/externalAssets/common/playersAction'
 };
