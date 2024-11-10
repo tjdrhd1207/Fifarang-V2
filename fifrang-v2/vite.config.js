@@ -4,11 +4,13 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
+    port: 3000,
     proxy: {
-        '/api': {
+        '/api/nexon-image': {
             target: 'https://fco.dn.nexoncdn.co.kr',
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
+            secure: false,
+            rewrite: (path) => path.replace(/^\/api\/nexon-image/, ''), 
         },
     },
   },

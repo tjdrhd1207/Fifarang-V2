@@ -9,7 +9,7 @@ async function httpRequest(requestMethod, requestUrl, resquestBody, exception = 
     if (!exception) {
         requestApiUrl = `https://open.api.nexon.com${requestUrl}=${resquestBody}`;
     } else {
-        requestApiUrl = `https://fco.dn.nexoncdn.co.kr${requestUrl}`;
+        requestApiUrl = `https://fco.dn.nexoncdn.co.kr/api/nexon-image${requestUrl}`;
     }
     const requestOptions = {};
 

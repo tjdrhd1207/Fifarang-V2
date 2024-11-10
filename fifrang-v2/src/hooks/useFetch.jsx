@@ -17,7 +17,7 @@ const useHttpRequest = () => {
             if (!exception) {
                 requestApiUrl = `https://open.api.nexon.com${requestUrl}`;
             } else {
-                requestApiUrl = `https://fco.dn.nexoncdn.co.kr${requestUrl}`;
+                requestApiUrl = `${requestUrl}`;
             }
             const requestHeader = {
                 [apiKey.key] : apiKey.value
@@ -38,7 +38,12 @@ const useHttpRequest = () => {
 
             if (requestMethod.toLowerCase() === 'get') {
                 console.log('get조회');
-                response = await axios.get(url, { headers: requestHeader, withCredentials: true });
+                const config = exception ? { responseType: 'blob' } : {};
+                response = await axios.get(url, { 
+                    headers: requestHeader, 
+                    withCredentials: true,
+                    ...config
+                });
             } else {
                 response = await axios({
                     method: requestMethod,
@@ -51,7 +56,8 @@ const useHttpRequest = () => {
             setData(response.data);
         } catch (err) {
             console.error(err); // Log the error
-            setError(err);    
+            // setError(err);
+            setData(null);
         } finally {
             setIsLoading(false);
         }

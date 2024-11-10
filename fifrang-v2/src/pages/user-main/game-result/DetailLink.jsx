@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import useHttpRequest from "../../../hooks/useFetch";
 import { API } from "../../../utils/api-url";
 import Loading from '../../../comonents/ui/LoadingSpinner';
+import loadPlayerImage from "../../../store/loadPlayerImage";
 
 const DetailBox = styled.div`
   display: flex;
@@ -21,7 +22,8 @@ function DetailLink(props) {
   const [homeStartList, setHomeStartList] = useState(null);
   const apiPlayersImage = API.GET_PLAYERS_IMAGE;
   const { data, isLoading, error, fetchData } = useHttpRequest();
-
+  const { setImageURL } = loadPlayerImage();
+  const { playerImageInfo, setPlayerImageInfo } = useState([]);
   const isFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ function DetailLink(props) {
           const url = `${apiPlayersImage}/p${player.spId}.png`;
           await fetchData(url, 'get', undefined, true);
         }
+
       };
 
       fetchPlayerImages();
@@ -44,6 +47,10 @@ function DetailLink(props) {
   useEffect(() => {
     if (data) {
       console.log("Fetched data:", data);
+      const imgURL = URL.createObjectURL(data);
+      // setPlayerImageInfo(...playerImageInfo, imgURL);
+      console.log('이미지배열');
+      console.log(playerImageInfo);
     }
   }, [data]);
 
@@ -57,6 +64,13 @@ function DetailLink(props) {
       <Typography sx={{ fontWeight: "400", fontSize: "15px", color: "white" }}>
         상세보기
       </Typography>
+      {/* <div>
+      {data ? (
+        <img src={URL.createObjectURL(data)} alt="Fetched" />
+      ) : (
+        <p>Loading image...</p>
+      )}
+    </div> */}
     </DetailBox>
   );
 }
