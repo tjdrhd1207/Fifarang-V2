@@ -10,5 +10,5 @@ export const API = {
     /* 매치타입 조회 */
     GET_MATCH_TYPE: '/static/fconline/meta/matchtype.json',
     /* 선수들 이미지 조회 */
-    GET_PLAYERS_IMAGE: '/live/externalAssets/common/playersAction'
+    GET_PLAYERS_IMAGE: '/api/nexon-image/live/externalAssets/common/playersAction'
 };

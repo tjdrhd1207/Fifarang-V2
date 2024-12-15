@@ -8,9 +8,13 @@ export default defineConfig({
     proxy: {
         '/api/nexon-image': {
             target: 'https://fco.dn.nexoncdn.co.kr',
+            // target: 'https://fo4.dn.nexoncdn.co.kr/',
             changeOrigin: true,
             secure: false,
-            rewrite: (path) => path.replace(/^\/api\/nexon-image/, ''), 
+            rewrite: (path) => path.replace(/^\/api\/nexon-image/, ''),
+            onProxyRes: (proxyRes) => {
+              proxyRes.headers['Cache-Control'] = 'no-cache';
+            }
         },
     },
   },

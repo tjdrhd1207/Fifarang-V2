@@ -7,20 +7,23 @@ const useHttpRequest = () => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const maxRetries = 5; // 최대 재시도 횟수
+    let retryCount = 0;
 
     const fetchData = useCallback(async(requestUrl, requestMethod = 'get', reqValue, exception = false) => {
         setIsLoading(true);
         let requestApiUrl = '';
         try {
-            console.log(`METHOD : ${requestMethod}`);
-            console.log(`requestBody : ${reqValue}`);
+            // console.log(`METHOD : ${requestMethod}`);
+            // console.log(`requestBody : ${reqValue}`);
             if (!exception) {
                 requestApiUrl = `https://open.api.nexon.com${requestUrl}`;
             } else {
                 requestApiUrl = `${requestUrl}`;
             }
             const requestHeader = {
-                [apiKey.key] : apiKey.value
+                [apiKey.key] : apiKey.value,
             };
             let url = requestApiUrl;
             if (!exception) { 
@@ -31,13 +34,11 @@ const useHttpRequest = () => {
                     url = `${requestApiUrl}=${reqValue}`;
                 }
             } else {
-                console.log('사진조회');
                 url = `${requestApiUrl}`;
             }
             let response = null;
 
             if (requestMethod.toLowerCase() === 'get') {
-                console.log('get조회');
                 const config = exception ? { responseType: 'blob' } : {};
                 response = await axios.get(url, { 
                     headers: requestHeader, 
@@ -55,9 +56,16 @@ const useHttpRequest = () => {
             }
             setData(response.data);
         } catch (err) {
-            console.error(err); // Log the error
+            console.log(err);
+            if (error.response && error.response.status === 429) {
+                console.warn('Rate limit exceeded. Retrying...');
+                const retryAfter = parseInt(error.response.headers['retry-after']) || 2000; // 'Retry-After' 헤더 확인
+                await delay(retryAfter);
+                retryCount++;
+              }
+            // console.error(err); // Log the error
             // setError(err);
-            setData(null);
+            // setData(null);
         } finally {
             setIsLoading(false);
         }

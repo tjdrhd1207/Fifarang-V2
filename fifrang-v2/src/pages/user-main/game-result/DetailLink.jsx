@@ -9,6 +9,8 @@ import { API } from "../../../utils/api-url";
 import Loading from '../../../comonents/ui/LoadingSpinner';
 import loadPlayerImage from "../../../store/loadPlayerImage";
 
+const DEFAULT_IMAGE = '/src/assets/default.svg';
+
 const DetailBox = styled.div`
   display: flex;
   width: 150px;
@@ -23,7 +25,7 @@ function DetailLink(props) {
   const apiPlayersImage = API.GET_PLAYERS_IMAGE;
   const { data, isLoading, error, fetchData } = useHttpRequest();
   const { setImageURL } = loadPlayerImage();
-  const { playerImageInfo, setPlayerImageInfo } = useState([]);
+  const [playerImages, setPlayerImages] = useState([]);
   const isFetchedRef = useRef(false);
 
   useEffect(() => {
@@ -31,18 +33,32 @@ function DetailLink(props) {
       setHomeStartList(detailInfo.matchInfo[0].player);
       console.log("Player data:", detailInfo.matchInfo[0].player);
 
-      const fetchPlayerImages = async () => {
-        for (const player of detailInfo.matchInfo[0].player) {
-          const url = `${apiPlayersImage}/p${player.spId}.png`;
-          await fetchData(url, 'get', undefined, true);
-        }
+      const fetchPlayerImages = async() => {
+        const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-      };
+        // 이미지 담을 배열 초기화
+        const fetchedImages = [];
+
+        // 각 선수를 순차적으로 처리하며 이미지 요청
+        for (const player of detailInfo.matchInfo[0].player) {
+          await delay(100); // 각 이미지 요청 사이에 100ms 지연
+          const url = `${apiPlayersImage}/p${player.spId}.png`;
+
+          try {
+            const imageBlob = await fetchData(url, 'get', undefined, true);
+            const imageURL = URL.createObjectURL(imageBlob); // Blob URL 생성
+            fetchedImages.push(imageURL);
+          } catch (fetchError) {
+            console.log('fetchError');
+            fetchedImages.push(DEFAULT_IMAGE);
+          }
+        }
+      }
 
       fetchPlayerImages();
       isFetchedRef.current = true;
     }
-  }, [detailInfo]); // 의존성 배열에서 detailInfo만 사용
+  }, [detailInfo, apiPlayersImage, fetchData]);
 
   useEffect(() => {
     if (data) {
@@ -50,13 +66,14 @@ function DetailLink(props) {
       const imgURL = URL.createObjectURL(data);
       // setPlayerImageInfo(...playerImageInfo, imgURL);
       console.log('이미지배열');
-      console.log(playerImageInfo);
+      console.log(imgURL);
     }
   }, [data]);
 
   if (isLoading) return <Loading>스타팅라인업 조회중..</Loading>;
   else if (error) {
     navigate(`/error`, { state: { errorMessage: error.message } });
+    return null;
   }
 
   return (
@@ -64,13 +81,15 @@ function DetailLink(props) {
       <Typography sx={{ fontWeight: "400", fontSize: "15px", color: "white" }}>
         상세보기
       </Typography>
-      {/* <div>
-      {data ? (
-        <img src={URL.createObjectURL(data)} alt="Fetched" />
-      ) : (
-        <p>Loading image...</p>
-      )}
-    </div> */}
+      <div>
+      {playerImages && playerImages.length > 0 ? (
+        playerImages.map((src, index) => (
+          <img key={index} src={src} alt={`Player ${index + 1}`} style={{ margin: "5px", width: "50px", height: "50px"}} />))
+        ) : (
+            <p>Loading images..</p>
+          )
+      }
+    </div>
     </DetailBox>
   );
 }
